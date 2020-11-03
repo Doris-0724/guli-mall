@@ -1,5 +1,6 @@
 package com.lizhimin.gulimall.coupon.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -29,6 +30,13 @@ import com.lizhimin.common.utils.R;
 public class CouponController {
     @Autowired
     private CouponService couponService;
+    @RequestMapping("/member/list")
+    public R memberCoupon(){
+        CouponEntity couponEntity = new CouponEntity();
+        couponEntity.setCouponName("满300减40");
+        couponEntity.setAmount(new BigDecimal(40));
+        return R.ok().put("coupons", Arrays.asList(couponEntity));
+    }
 
     /**
      * 列表
