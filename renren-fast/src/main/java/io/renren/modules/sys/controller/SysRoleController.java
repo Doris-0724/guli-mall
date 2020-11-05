@@ -29,7 +29,6 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends AbstractController {

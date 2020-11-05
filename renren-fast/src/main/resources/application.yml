@@ -42,7 +42,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 47.104.227.161:8848
 #  resources:
 #    add-mappings: false
 
@@ -80,3 +80,4 @@ renren:
     # token有效时长，7天，单位秒
     expire: 604800
     header: token
+

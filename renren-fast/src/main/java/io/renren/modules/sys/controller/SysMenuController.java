@@ -28,7 +28,6 @@ import java.util.Set;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/sys/menu")
 public class SysMenuController extends AbstractController {

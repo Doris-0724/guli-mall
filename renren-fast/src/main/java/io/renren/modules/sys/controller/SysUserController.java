@@ -34,7 +34,6 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {

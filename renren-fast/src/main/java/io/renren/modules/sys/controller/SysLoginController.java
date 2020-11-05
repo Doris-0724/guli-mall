@@ -31,7 +31,6 @@ import java.util.Map;
  *
  * @author Mark sunlightcs@gmail.com
  */
-@CrossOrigin
 @RestController
 public class SysLoginController extends AbstractController {
 	@Autowired

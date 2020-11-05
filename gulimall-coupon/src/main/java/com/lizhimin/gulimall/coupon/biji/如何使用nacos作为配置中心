@@ -1,0 +1,23 @@
+1、如何使用nacos作为配置中心，统一管理配置
+    1）添加依赖
+
+        <!--        配置中心来做配置管理-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+    2）创建一个bootstrap.properties
+        spring.cloud.nacos.config.server-addr=47.104.227.161:8848
+        spring.application.name=gulimall-coupon
+    3）需要给配置中心默认添加一个叫做(Data Id)gulimall-coupons.properties,默认是应用名.properties
+    4) 给应用名.properties 添加配置
+    5）动态获取配置
+        @RefreshScope 动态获取并刷新配置
+        @Value（"${配置项目名}"）
+        配置中心和当前文件中都配置了相同的项目，优先使用配置中心
+2、细节
+    1）命名空间:配置隔离：
+        默认：public（保留空间）开发，测试、生产环境
+    2）配置集
+    3）配置集ID
+    4）配置分组
