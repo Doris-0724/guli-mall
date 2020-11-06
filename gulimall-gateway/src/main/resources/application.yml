@@ -5,12 +5,26 @@ spring:
         server-addr: 47.104.227.161:8848
     gateway:
       routes:
+        - id: product_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: admin_route
           uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>.*),/renren-fast/$\{segment}
+
+
+
+
+
+
+
+
 ## 前端项目加上/api
 
   application:

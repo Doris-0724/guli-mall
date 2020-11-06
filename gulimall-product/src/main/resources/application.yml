@@ -9,12 +9,17 @@ spring:
       discovery:
         server-addr: 47.104.227.161:8848
   application:
-    name: gulimall-member
+    name: gulimall-product
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 server:
   port: 10000
+logging:
+  level:
+    com.lizhimin.gulimall: debug
