@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,20 +35,25 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public List<CategoryEntity> listwithTree() {
-        List<CategoryEntity> allCategoryEntityList = baseMapper.selectList(null);
-        //一级分类
-        List<CategoryEntity> level1Meus = allCategoryEntityList.stream().filter((categoryEntity) -> {
-            return categoryEntity.getParentCid() == 0L;
-        }).map((menu)->{
-            menu.setChildren(getChildren(menu,allCategoryEntityList));
+        //1、查出所有分类
+        List<CategoryEntity> entities = baseMapper.selectList(null);
+
+        //2、组装成父子的树形结构
+
+        //2.1）、找到所有的一级分类
+        List<CategoryEntity> level1Menus = entities.stream().filter(categoryEntity ->
+              categoryEntity.getParentCid() == 0L
+        ).map((menu)->{
+            menu.setChildren(getChildrens(menu,entities));
             return menu;
-        }).sorted((menu1, menu2)->{
-            return menu1.getSort() - menu2.getSort();
+        }).sorted((menu1,menu2)->{
+            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
         }).collect(Collectors.toList());
 
 
 
-        return level1Meus;
+
+        return level1Menus;
     }
 
     @Override
@@ -57,25 +63,31 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     /**
      * 递归查找所有菜单的子菜单
-     * @param categoryEntity
-     * @param allCategoryEntityList
+     * @param root
+     * @param all
      * @return
      */
-    private List<CategoryEntity> getChildren(CategoryEntity categoryEntity,List<CategoryEntity> allCategoryEntityList){
+    private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> all){
+        List<CategoryEntity> children = all.stream().filter(categoryEntity ->
+            categoryEntity.getParentCid().equals(root.getCatId())
+        ).map(categoryEntity -> {
+            //1、找到子菜单
+            System.out.println("==========="+categoryEntity);
+            categoryEntity.setChildren(getChildrens(categoryEntity,all));
 
-        List<CategoryEntity> children = allCategoryEntityList.stream().filter((categoryEntity1) -> {
-            return categoryEntity1.getParentCid() == categoryEntity.getCatId();
-        }).map((categoryEntity2)->{
-            //递归找法
-            categoryEntity2.setChildren(getChildren(categoryEntity2,allCategoryEntityList));
-            return categoryEntity2;
-            }
-        ).sorted((menu1,menu2)->{
-            //菜单的排序
-            return menu1.getSort() == null?0:menu1.getSort() - (menu2.getSort() == null?0:menu2.getSort());
+            return categoryEntity;
         }).collect(Collectors.toList());
-
         return children;
+    }
+    private List<CategoryEntity> getC(CategoryEntity root,List<CategoryEntity> all){
+        List<CategoryEntity> filterList = new ArrayList<>();
+        for(CategoryEntity cc:all){
+            if (cc.getParentCid().equals(root.getCatId())){
+               filterList.add(cc);
+               getC(cc,all);
+            }
+        }
+        return filterList;
     }
 
 }
