@@ -70,6 +70,16 @@ public class BrandController {
 
         return R.ok();
     }
+    /**
+     * 修改
+     */
+    @PostMapping("/update")
+    //@RequiresPermissions("product:brand:update")
+    public R updateAll(@RequestBody BrandEntity brand){
+        brandService.updateById(brand);
+
+        return R.ok();
+    }
 
     /**
      * 删除
